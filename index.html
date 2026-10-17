@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fcfbff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>LPL — Live Place Live</title>
+    <style>
+      :root { --bg:#fcfbff; --panel:#fff; --line:#ded5fa; --muted:#756f85; --text:#221d31; --red:#e23d61; --violet:#7656c9; }
+      * { box-sizing:border-box; }
+      html, body { margin:0; background:var(--bg); }
+      body { min-width:320px; color:var(--text); background:radial-gradient(circle at 88% -5%,#e5dbff 0,transparent 26rem),var(--bg); font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif; }
+      button, a { font:inherit; }
+      button { cursor:pointer; }
+      .shell { max-width:1480px; margin:0 auto; padding:32px 24px 24px; }
+      .topbar { position:relative; display:flex; overflow:hidden; align-items:end; justify-content:space-between; gap:24px; min-height:174px; margin-bottom:28px; padding:24px; border:1px solid var(--line); background:linear-gradient(100deg,rgba(255,255,255,.96),rgba(250,247,255,.72)); }
+      .topbar::after { position:absolute; z-index:0; inset:0; content:""; opacity:.42; background:radial-gradient(ellipse at 76% 8%,#c9b0ff 0 2%,transparent 25%),radial-gradient(ellipse at 90% 110%,#e7ddff 0 8%,transparent 47%),linear-gradient(115deg,transparent 45%,rgba(143,97,225,.2) 46%,transparent 49%),linear-gradient(68deg,transparent 58%,rgba(202,179,249,.35) 59%,transparent 61%); filter:blur(8px); }
+      .topbar > * { position:relative; z-index:1; }
+      .brand-lockup { display:flex; align-items:center; gap:14px; }
+      .lpl-logo { display:block; width:56px; height:56px; object-fit:contain; }
+      .eyebrow { color:var(--violet); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+      h1 { margin:7px 0 0; font-size:clamp(30px,4vw,48px); font-weight:800; letter-spacing:-.055em; }
+      .subtitle { margin:2px 0 0; color:#665d7a; font-size:13px; font-weight:650; letter-spacing:.02em; }
+      .date { color:var(--muted); font-size:13px; white-space:nowrap; }
+      .filters { display:flex; flex-wrap:wrap; gap:0; margin-bottom:18px; }
+      .filter { border:1px solid var(--line); border-radius:0; padding:9px 13px; color:#4c455d; background:#fff; font-size:13px; transition:.2s ease; }
+      .filter + .filter { border-left:0; }
+      .filter:hover, .filter.active { border-color:#987ce5; background:#eae3ff; color:#2b1a58; }
+      .filter.live-filter.active { color:#8d1732; border-color:#e8a2b2; background:#fff0f3; }
+      .local-note { margin:0 0 18px; padding:12px 14px; border:1px solid #c7b4ef; color:#553799; background:#f4efff; font-size:13px; line-height:1.5; }
+      .local-note code { color:#35206d; }
+      .layout { display:grid; grid-template-columns:minmax(280px,.77fr) minmax(480px,1.23fr); gap:18px; align-items:start; }
+      .club-list { display:grid; gap:0; }
+      .club-card { position:relative; width:100%; text-align:left; padding:18px; border:1px solid var(--line); border-radius:0; color:var(--text); background:linear-gradient(120deg,#fff,#faf8ff); transition:border .2s,transform .2s,background .2s; }
+      .club-card + .club-card { border-top:0; }
+      .club-card:hover { border-color:#b49beb; transform:translateY(-1px); }
+      .club-card.selected { border-color:#987ce5; background:linear-gradient(120deg,#f2edff,#fff); box-shadow:inset 3px 0 0 var(--violet); }
+      .club-meta { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:18px; }
+      .area { color:var(--muted); font-size:12px; }
+      .live, .vod { display:inline-flex; align-items:center; font-size:11px; font-weight:800; letter-spacing:.06em; }
+      .live { color:var(--red); animation:blink 1.3s ease-in-out infinite; }
+      .vod { color:#6d50b8; }
+      @keyframes blink { 50% { opacity:.35; } }
+      .club-name { margin:0; font-size:23px; font-weight:750; letter-spacing:-.04em; }
+      .lineup-preview { overflow:hidden; margin:7px 0 0; color:#5d566d; font-size:13px; line-height:1.45; white-space:nowrap; text-overflow:ellipsis; }
+      .empty { padding:40px 16px; border:1px dashed #b9aae5; color:var(--muted); text-align:center; font-size:14px; }
+      .viewer { overflow:hidden; border:1px solid #cdbef4; background:var(--panel); }
+      .video-wrap { aspect-ratio:16 / 9; background:#e9e2fa; }
+      #ytPlayer, #ytPlayer iframe { width:100%; height:100%; }
+      iframe { display:block; width:100%; height:100%; border:0; }
+      .details { padding:23px; }
+      .viewer-label { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--violet); font-size:11px; font-weight:800; letter-spacing:.14em; }
+      .details h2 { margin:9px 0 5px; font-size:clamp(29px,4vw,40px); font-weight:800; letter-spacing:-.055em; }
+      .details-actions { display:flex; flex-wrap:wrap; gap:0; margin:18px 0 11px; }
+      .watch, .insta { display:inline-flex; padding:9px 12px; font-size:12px; font-weight:700; text-decoration:none; }
+      .watch { border:1px solid var(--violet); color:#fff; background:var(--violet); }
+      .watch:hover { background:#5f3eb2; }
+      .insta { border:1px solid #b49beb; border-left:0; color:var(--text); background:#fff; }
+      .insta:hover { border-color:var(--violet); color:var(--violet); }
+      .location { margin:0; color:var(--muted); font-size:14px; }
+      .detail-line { height:1px; margin:20px 0; background:var(--line); }
+      .lineup-title { margin:0 0 8px; color:#756f85; font-size:11px; font-weight:800; letter-spacing:.12em; }
+      .lineup { margin:0; color:#312944; font-size:15px; line-height:1.65; }
+      .detail-footer { margin-top:24px; }
+      .mode { color:var(--muted); font-size:12px; }
+      .footer { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:30px; color:#756f85; font-size:11px; }
+      .footer-button { display:inline-flex; padding:9px 12px; border:1px solid #b49beb; color:#35206d; background:#fff; text-decoration:none; font-size:12px; font-weight:700; }
+      .footer-button:hover { border-color:var(--violet); background:#f2edff; }
+      @media (max-width:780px) { .shell { padding:22px 16px; } .topbar { align-items:start; flex-direction:column; min-height:150px; gap:8px; margin-bottom:22px; padding:18px; } .date { white-space:normal; } .layout { grid-template-columns:1fr; } .viewer { order:-1; } .details { padding:18px; } .club-card { padding:15px; } .footer { align-items:flex-start; flex-direction:column; } }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img class="lpl-logo" src="assets/lpl-logo.png" alt="LPL 로고" />
+          <div><div class="eyebrow">INDEPENDENT MUSIC LIVE</div><h1>LPL</h1><p class="subtitle">Live Place Live</p></div>
+        </div>
+        <div class="date" id="today"></div>
+      </header>
+      <nav class="filters" aria-label="클럽 필터">
+        <button class="filter active" data-filter="all">전체</button>
+        <button class="filter live-filter" data-filter="live">🔴 실시간 라이브</button>
+        <button class="filter" data-filter="vod">▶ VOD 라디오</button>
+      </nav>
+      <p class="local-note" id="localNote" hidden>현재 <code>file://</code>로 열려 있어 YouTube 임베드가 오류 153을 낼 수 있습니다. 정적 HTTP 서버 또는 배포 URL에서 열어주세요.</p>
+      <section class="layout" aria-label="라이브 클럽 목록">
+        <div class="club-list" id="clubList" aria-label="클럽 목록"></div>
+        <article class="viewer" id="viewer" aria-live="polite"></article>
+      </section>
+      <footer class="footer"><span>© 2026 1101STUDIO. All rights reserved.</span><a class="footer-button" href="https://forms.gle/ms5k5NFsjikTXJj57" target="_blank" rel="noopener noreferrer">라이브 클럽 등록 문의 →</a></footer>
+    </main>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      const clubs = [
+        { id:"bbang", name:"클럽 빵", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
+        { id:"moonlight", name:"감성달빛", location:"서울 성북구", isLive:false, liveVideoId:"", vodPlaylistId:"PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
+        { id:"unplugged", name:"카페 언플러그드", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
+        { id:"studio1101", name:"1101스튜디오", location:"경기도 고양시", isLive:false, liveVideoId:"", vodPlaylistId:"PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"https://www.instagram.com/" }
+      ];
+      let selectedId = clubs[0].id;
+      let filter = "all";
+      let youtubeApiReady = false;
+      let player = null;
+      const list = document.querySelector("#clubList");
+      const viewer = document.querySelector("#viewer");
+      document.querySelector("#today").textContent = new Intl.DateTimeFormat("ko-KR", { dateStyle:"full" }).format(new Date());
+      document.querySelector("#localNote").hidden = location.protocol !== "file:";
+
+      function embedUrl(club) {
+        const origin = location.protocol.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
+        if (club.isLive && club.liveVideoId) return `https://www.youtube-nocookie.com/embed/${club.liveVideoId}?rel=0&modestbranding=1${origin}`;
+        return `https://www.youtube-nocookie.com/embed/videoseries?list=${club.vodPlaylistId}&rel=0&modestbranding=1${origin}`;
+      }
+      function filteredClubs() { return filter === "live" ? clubs.filter((club) => club.isLive) : filter === "vod" ? clubs.filter((club) => !club.isLive) : clubs; }
+      function updateVodTitle(target, club) {
+        if (club.isLive) return;
+        const title = target.getVideoData?.().title;
+        const titleNode = document.querySelector("#nowPlaying");
+        if (title && titleNode) titleNode.textContent = title;
+      }
+      function mountPlayer(club) {
+        const target = document.querySelector("#ytPlayer");
+        if (!target) return;
+        if (!youtubeApiReady || !window.YT?.Player) {
+          target.innerHTML = `<iframe src="${embedUrl(club)}" title="${club.name} 플레이어" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+          return;
+        }
+        if (player?.destroy) player.destroy();
+        player = new YT.Player("ytPlayer", {
+          width:"100%", height:"100%", videoId:club.isLive ? club.liveVideoId : undefined,
+          playerVars:club.isLive ? { rel:0, modestbranding:1 } : { listType:"playlist", list:club.vodPlaylistId, rel:0, modestbranding:1 },
+          events:{ onReady:(event) => updateVodTitle(event.target, club), onStateChange:(event) => updateVodTitle(event.target, club) }
+        });
+      }
+      window.onYouTubeIframeAPIReady = () => { youtubeApiReady = true; render(); };
+      function render() {
+        const visible = filteredClubs();
+        if (!visible.some((club) => club.id === selectedId)) selectedId = visible[0]?.id;
+        const selected = clubs.find((club) => club.id === selectedId);
+        list.innerHTML = visible.length ? visible.map((club) => `
+          <button class="club-card ${club.id === selectedId ? "selected" : ""}" data-id="${club.id}" aria-pressed="${club.id === selectedId}">
+            <div class="club-meta"><span class="area">${club.location}</span>${club.isLive ? '<span class="live">🔴 LIVE</span>' : '<span class="vod">▶ VOD</span>'}</div>
+            <h2 class="club-name">${club.name}</h2><p class="lineup-preview">${club.isLive ? "라이브 스트리밍 중" : "VOD 재생목록"}</p>
+          </button>`).join("") : '<div class="empty">이 조건에 맞는 클럽이 없습니다.</div>';
+        if (!selected) { viewer.innerHTML = ""; return; }
+        viewer.innerHTML = `
+          <div class="video-wrap"><div id="ytPlayer"></div></div>
+          <div class="details">
+            <div class="viewer-label"><span>${selected.isLive ? "ON AIR · LIVE STAGE" : "VOD RADIO · ARCHIVE"}</span>${selected.isLive ? '<span class="live">🔴 LIVE</span>' : ''}</div>
+            <h2>${selected.name}</h2>
+            <div class="details-actions"><a class="watch" href="${selected.channelUrl}" target="_blank" rel="noopener noreferrer">YouTube 채널 바로가기 ↗</a><a class="insta" href="${selected.instagramUrl}" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div>
+            <p class="location">${selected.location}</p><div class="detail-line"></div>
+            <p class="lineup-title">${selected.isLive ? "LIVE NOW" : "NOW PLAYING"}</p><p class="lineup" id="nowPlaying">${selected.isLive ? "라이브 스트리밍 중" : "영상 제목 불러오는 중..."}</p>
+            <div class="detail-footer"><span class="mode">${selected.isLive ? "현재 라이브 스트리밍 중" : "VOD 플레이리스트 재생 중"}</span></div>
+          </div>`;
+        mountPlayer(selected);
+      }
+      document.querySelector(".filters").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-filter]");
+        if (!button) return;
+        filter = button.dataset.filter;
+        document.querySelectorAll("[data-filter]").forEach((item) => item.classList.toggle("active", item === button));
+        render();
+      });
+      list.addEventListener("click", (event) => { const card = event.target.closest("[data-id]"); if (card) { selectedId = card.dataset.id; render(); } });
+      render();
+    </script>
+  </body>
+</html>

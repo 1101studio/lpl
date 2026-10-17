@@ -92,72 +92,69 @@
       <footer class="footer"><span>© 2026 1101STUDIO. All rights reserved.</span><a class="footer-button" href="https://forms.gle/ms5k5NFsjikTXJj57" target="_blank" rel="noopener noreferrer">라이브 클럽 등록 문의 →</a></footer>
     </main>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
+<script>
       const clubs = [
         { id:"bbang", name:"클럽 빵", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
         { id:"moonlight", name:"감성달빛", location:"서울 성북구", isLive:false, liveVideoId:"", vodPlaylistId:"PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
         { id:"unplugged", name:"카페 언플러그드", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
         { id:"studio1101", name:"1101스튜디오", location:"경기도 고양시", isLive:false, liveVideoId:"", vodPlaylistId:"PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"https://www.instagram.com/" }
       ];
+
       let selectedId = clubs[0].id;
       let filter = "all";
-      let youtubeApiReady = false;
-      let player = null;
       const list = document.querySelector("#clubList");
       const viewer = document.querySelector("#viewer");
+
       document.querySelector("#today").textContent = new Intl.DateTimeFormat("ko-KR", { dateStyle:"full" }).format(new Date());
       document.querySelector("#localNote").hidden = location.protocol !== "file:";
 
       function embedUrl(club) {
-        const origin = location.protocol.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
-        if (club.isLive && club.liveVideoId) return `https://www.youtube-nocookie.com/embed/${club.liveVideoId}?rel=0&modestbranding=1${origin}`;
-        return `https://www.youtube-nocookie.com/embed/videoseries?list=${club.vodPlaylistId}&rel=0&modestbranding=1${origin}`;
-      }
-      function filteredClubs() { return filter === "live" ? clubs.filter((club) => club.isLive) : filter === "vod" ? clubs.filter((club) => !club.isLive) : clubs; }
-      function updateVodTitle(target, club) {
-        if (club.isLive) return;
-        const title = target.getVideoData?.().title;
-        const titleNode = document.querySelector("#nowPlaying");
-        if (title && titleNode) titleNode.textContent = title;
-      }
-      function mountPlayer(club) {
-        const target = document.querySelector("#ytPlayer");
-        if (!target) return;
-        if (!youtubeApiReady || !window.YT?.Player) {
-          target.innerHTML = `<iframe src="${embedUrl(club)}" title="${club.name} 플레이어" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-          return;
+        if (club.isLive && club.liveVideoId) {
+          return `https://www.youtube.com/embed/${club.liveVideoId}?rel=0&modestbranding=1`;
         }
-        if (player?.destroy) player.destroy();
-        player = new YT.Player("ytPlayer", {
-          width:"100%", height:"100%", videoId:club.isLive ? club.liveVideoId : undefined,
-          playerVars:club.isLive ? { rel:0, modestbranding:1 } : { listType:"playlist", list:club.vodPlaylistId, rel:0, modestbranding:1 },
-          events:{ onReady:(event) => updateVodTitle(event.target, club), onStateChange:(event) => updateVodTitle(event.target, club) }
-        });
+        return `https://www.youtube.com/embed/videoseries?list=${club.vodPlaylistId}&rel=0&modestbranding=1`;
       }
-      window.onYouTubeIframeAPIReady = () => { youtubeApiReady = true; render(); };
+
+      function filteredClubs() {
+        return filter === "live" ? clubs.filter((club) => club.isLive) : filter === "vod" ? clubs.filter((club) => !club.isLive) : clubs;
+      }
+
       function render() {
         const visible = filteredClubs();
         if (!visible.some((club) => club.id === selectedId)) selectedId = visible[0]?.id;
         const selected = clubs.find((club) => club.id === selectedId);
+
         list.innerHTML = visible.length ? visible.map((club) => `
           <button class="club-card ${club.id === selectedId ? "selected" : ""}" data-id="${club.id}" aria-pressed="${club.id === selectedId}">
             <div class="club-meta"><span class="area">${club.location}</span>${club.isLive ? '<span class="live">🔴 LIVE</span>' : '<span class="vod">▶ VOD</span>'}</div>
             <h2 class="club-name">${club.name}</h2><p class="lineup-preview">${club.isLive ? "라이브 스트리밍 중" : "VOD 재생목록"}</p>
           </button>`).join("") : '<div class="empty">이 조건에 맞는 클럽이 없습니다.</div>';
-        if (!selected) { viewer.innerHTML = ""; return; }
+
+        if (!selected) {
+          viewer.innerHTML = "";
+          return;
+        }
+
         viewer.innerHTML = `
-          <div class="video-wrap"><div id="ytPlayer"></div></div>
+          <div class="video-wrap">
+            <iframe 
+              src="${embedUrl(selected)}" 
+              title="${selected.name} 플레이어" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
           <div class="details">
             <div class="viewer-label"><span>${selected.isLive ? "ON AIR · LIVE STAGE" : "VOD RADIO · ARCHIVE"}</span>${selected.isLive ? '<span class="live">🔴 LIVE</span>' : ''}</div>
             <h2>${selected.name}</h2>
             <div class="details-actions"><a class="watch" href="${selected.channelUrl}" target="_blank" rel="noopener noreferrer">YouTube 채널 바로가기 ↗</a><a class="insta" href="${selected.instagramUrl}" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div>
             <p class="location">${selected.location}</p><div class="detail-line"></div>
-            <p class="lineup-title">${selected.isLive ? "LIVE NOW" : "NOW PLAYING"}</p><p class="lineup" id="nowPlaying">${selected.isLive ? "라이브 스트리밍 중" : "영상 제목 불러오는 중..."}</p>
+            <p class="lineup-title">${selected.isLive ? "LIVE NOW" : "NOW PLAYING"}</p>
+            <p class="lineup" id="nowPlaying">${selected.isLive ? "실시간 라이브 송출 중" : selected.name + " 아카이브 재생목록 (플레이어 우측 상단 목록 버튼으로 선곡 가능)"}</p>
             <div class="detail-footer"><span class="mode">${selected.isLive ? "현재 라이브 스트리밍 중" : "VOD 플레이리스트 재생 중"}</span></div>
           </div>`;
-        mountPlayer(selected);
       }
+
       document.querySelector(".filters").addEventListener("click", (event) => {
         const button = event.target.closest("[data-filter]");
         if (!button) return;
@@ -165,7 +162,15 @@
         document.querySelectorAll("[data-filter]").forEach((item) => item.classList.toggle("active", item === button));
         render();
       });
-      list.addEventListener("click", (event) => { const card = event.target.closest("[data-id]"); if (card) { selectedId = card.dataset.id; render(); } });
+
+      list.addEventListener("click", (event) => {
+        const card = event.target.closest("[data-id]");
+        if (card) {
+          selectedId = card.dataset.id;
+          render();
+        }
+      });
+
       render();
     </script>
   </body>

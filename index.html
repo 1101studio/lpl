@@ -83,6 +83,7 @@
         <button class="filter active" data-filter="all">전체</button>
         <button class="filter live-filter" data-filter="live">🔴 실시간 라이브</button>
         <button class="filter" data-filter="vod">▶ VOD 라디오</button>
+        <button class="filter" data-filter="radio">📻 인디 라디오</button>
       </nav>
       <p class="local-note" id="localNote" hidden>현재 <code>file://</code>로 열려 있어 YouTube 임베드가 오류 153을 낼 수 있습니다. 정적 HTTP 서버 또는 배포 URL에서 열어주세요.</p>
       <section class="layout" aria-label="라이브 클럽 목록">
@@ -94,10 +95,13 @@
 
 <script>
       const clubs = [
-        { id:"bbang", name:"클럽 빵", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"UUU-1Rejnev1Rrt3EUK_OEAg", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
-        { id:"moonlight", name:"감성달빛", location:"서울 성북구", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
-        { id:"unplugged", name:"카페 언플러그드", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
-        { id:"studio1101", name:"1101스튜디오", location:"경기도 고양시", isLive:false, liveVideoId:"", vodPlaylistId:"", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"https://www.instagram.com/" }
+        { id:"moonlight", category:"stage", name:"감성달빛", location:"서울 성북구", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
+        { id:"unplugged", category:"stage", name:"카페 언플러그드", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
+        { id:"bbang", category:"stage", name:"클럽 빵", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"ULU-1Rejnev1Rrt3EUK_OEAg", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
+        { id:"studio1101", category:"stage", name:"1101스튜디오", location:"경기도 고양시", isLive:false, liveVideoId:"", vodPlaylistId:"", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"" },
+        { id:"browngongbang", category:"radio", name:"해원이의 갈색공방", location:"낭만을 꿈꾸고 있는가", isLive:false, liveVideoId:"", vodPlaylistId:"ULMmVUnhWtqnIKvaUXOD2eCQ", channelUrl:"https://www.youtube.com/@brown_gongbang", instagramUrl:"" },
+        { id:"ynonair", category:"radio", name:"연남별장OnAir", location:"", isLive:false, liveVideoId:"", vodPlaylistId:"UL8EkONIYIE09NGWDPwmRnEA", channelUrl:"https://www.youtube.com/@YN_OnAir", instagramUrl:"" },
+        { id:"moonlightradio", category:"radio", name:"감달라디오", location:"", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pYqtuPTTbxACAXrfY0GQOU1", channelUrl:"https://www.youtube.com/@ggamdal", instagramUrl:"" }
       ];
 
       let selectedId = clubs[0].id;
@@ -116,7 +120,10 @@
       }
 
       function filteredClubs() {
-        return filter === "live" ? clubs.filter((club) => club.isLive) : filter === "vod" ? clubs.filter((club) => !club.isLive) : clubs;
+        if (filter === "live") return clubs.filter((club) => club.isLive);
+        if (filter === "vod") return clubs.filter((club) => club.category !== "radio" && !club.isLive);
+        if (filter === "radio") return clubs.filter((club) => club.category === "radio");
+        return clubs;
       }
 
       function render() {

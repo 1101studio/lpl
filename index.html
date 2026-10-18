@@ -7,35 +7,49 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>LPL — Live Place Live</title>
     <style>
-      :root { --bg:#fcfbff; --panel:#fff; --line:#ded5fa; --muted:#756f85; --text:#221d31; --red:#e23d61; --violet:#7656c9; }
+      :root { --bg:#fcfbff; --panel:#fff; --line:#ded5fa; --muted:#756f85; --text:#221d31; --red:#e23d61; --violet:#7656c9; --card-bg:linear-gradient(120deg,#fff,#faf8ff); --card-selected:linear-gradient(120deg,#f2edff,#fff); --topbar-bg:linear-gradient(100deg,rgba(255,255,255,.96),rgba(250,247,255,.72)); --btn-bg:#fff; --filter-active:#eae3ff; --filter-active-text:#2b1a58; }
+      [data-theme="dark"] { --bg:#110e1a; --panel:#1a1626; --line:#322a47; --muted:#9b93ad; --text:#f2effa; --violet:#9d7ff2; --card-bg:linear-gradient(120deg,#1a1626,#151120); --card-selected:linear-gradient(120deg,#282040,#1a1626); --topbar-bg:linear-gradient(100deg,rgba(26,22,38,.96),rgba(20,16,30,.82)); --btn-bg:#1a1626; --filter-active:#352859; --filter-active-text:#f2effa; }
       * { box-sizing:border-box; }
       html, body { margin:0; background:var(--bg); }
       body { min-width:320px; color:var(--text); background:radial-gradient(circle at 88% -5%,#e5dbff 0,transparent 26rem),var(--bg); font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif; }
+      [data-theme="dark"] body { background:radial-gradient(circle at 88% -5%,#2b1d4a 0,transparent 26rem),var(--bg); }
       button, a { font:inherit; }
       button { cursor:pointer; }
       .shell { max-width:1480px; margin:0 auto; padding:32px 24px 24px; }
-      .topbar { position:relative; display:flex; overflow:hidden; align-items:end; justify-content:space-between; gap:24px; min-height:174px; margin-bottom:28px; padding:24px; border:1px solid var(--line); background:linear-gradient(100deg,rgba(255,255,255,.96),rgba(250,247,255,.72)); }
+      .topbar { position:relative; display:flex; overflow:hidden; align-items:end; justify-content:space-between; gap:24px; min-height:174px; margin-bottom:28px; padding:24px; border:1px solid var(--line); background:var(--topbar-bg); }
       .topbar::after { position:absolute; z-index:0; inset:0; content:""; opacity:.42; background:radial-gradient(ellipse at 76% 8%,#c9b0ff 0 2%,transparent 25%),radial-gradient(ellipse at 90% 110%,#e7ddff 0 8%,transparent 47%),linear-gradient(115deg,transparent 45%,rgba(143,97,225,.2) 46%,transparent 49%),linear-gradient(68deg,transparent 58%,rgba(202,179,249,.35) 59%,transparent 61%); filter:blur(8px); }
       .topbar > * { position:relative; z-index:1; }
       .brand-lockup { display:flex; align-items:center; gap:14px; }
       .lpl-logo { display:block; width:56px; height:56px; object-fit:contain; }
       .eyebrow { color:var(--violet); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
       h1 { margin:7px 0 0; font-size:clamp(30px,4vw,48px); font-weight:800; letter-spacing:-.055em; }
-      .subtitle { margin:2px 0 0; color:#665d7a; font-size:13px; font-weight:650; letter-spacing:.02em; }
+      .subtitle { margin:2px 0 0; color:var(--muted); font-size:13px; font-weight:650; letter-spacing:.02em; }
+      .topbar-right { display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; align-self:stretch; gap:12px; }
+      .top-controls { display:flex; align-items:center; gap:8px; }
+      .lang-group { display:inline-flex; border:1px solid var(--line); background:var(--btn-bg); }
+      .lang-btn { border:0; background:transparent; color:var(--muted); padding:6px 10px; font-size:11px; font-weight:800; transition:.2s; }
+      .lang-btn + .lang-btn { border-left:1px solid var(--line); }
+      .lang-btn.active, .lang-btn:hover { background:var(--filter-active); color:var(--filter-active-text); }
+      .theme-btn { border:1px solid var(--line); background:var(--btn-bg); color:var(--text); padding:6px 11px; font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:6px; transition:.2s; }
+      .theme-btn:hover { border-color:var(--violet); }
       .date { color:var(--muted); font-size:13px; white-space:nowrap; }
       .filters { display:flex; flex-wrap:wrap; gap:0; margin-bottom:18px; }
-      .filter { border:1px solid var(--line); border-radius:0; padding:9px 13px; color:#4c455d; background:#fff; font-size:13px; transition:.2s ease; }
+      .filter { border:1px solid var(--line); border-radius:0; padding:9px 13px; color:var(--muted); background:var(--btn-bg); font-size:13px; transition:.2s ease; }
       .filter + .filter { border-left:0; }
-      .filter:hover, .filter.active { border-color:#987ce5; background:#eae3ff; color:#2b1a58; }
+      .filter:hover, .filter.active { border-color:#987ce5; background:var(--filter-active); color:var(--filter-active-text); }
       .filter.live-filter.active { color:#8d1732; border-color:#e8a2b2; background:#fff0f3; }
       .local-note { margin:0 0 18px; padding:12px 14px; border:1px solid #c7b4ef; color:#553799; background:#f4efff; font-size:13px; line-height:1.5; }
       .local-note code { color:#35206d; }
       .layout { display:grid; grid-template-columns:minmax(280px,.77fr) minmax(480px,1.23fr); gap:18px; align-items:start; }
       .club-list { display:grid; gap:0; }
-      .club-card { position:relative; width:100%; text-align:left; padding:18px; border:1px solid var(--line); border-radius:0; color:var(--text); background:linear-gradient(120deg,#fff,#faf8ff); transition:border .2s,transform .2s,background .2s; }
+      .club-card { position:relative; overflow:hidden; width:100%; text-align:left; padding:18px; border:1px solid var(--line); border-radius:0; color:var(--text); background:var(--card-bg); transition:border .2s,transform .2s,background .2s; }
       .club-card + .club-card { border-top:0; }
       .club-card:hover { border-color:#b49beb; transform:translateY(-1px); }
-      .club-card.selected { border-color:#987ce5; background:linear-gradient(120deg,#f2edff,#fff); box-shadow:inset 3px 0 0 var(--violet); }
+      .club-card.selected { border-color:#987ce5; background:var(--card-selected); box-shadow:inset 3px 0 0 var(--violet); }
+      .club-card > *:not(.club-bg-logo) { position:relative; z-index:1; }
+      .club-bg-logo { position:absolute; right:-8px; bottom:-12px; width:115px; height:115px; background-size:contain; background-repeat:no-repeat; background-position:center; opacity:.09; filter:blur(1.5px) grayscale(20%); pointer-events:none; z-index:0; transition:transform .3s ease,opacity .3s ease,filter .3s ease; }
+      [data-theme="dark"] .club-bg-logo { opacity:.14; }
+      .club-card:hover .club-bg-logo, .club-card.selected .club-bg-logo { transform:scale(1.08); opacity:.18; filter:blur(.5px) grayscale(0%); }
       .club-meta { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:18px; }
       .area { color:var(--muted); font-size:12px; }
       .live, .vod { display:inline-flex; align-items:center; font-size:11px; font-weight:800; letter-spacing:.06em; }
@@ -43,7 +57,7 @@
       .vod { color:#6d50b8; }
       @keyframes blink { 50% { opacity:.35; } }
       .club-name { margin:0; font-size:23px; font-weight:750; letter-spacing:-.04em; }
-      .lineup-preview { overflow:hidden; margin:7px 0 0; color:#5d566d; font-size:13px; line-height:1.45; white-space:nowrap; text-overflow:ellipsis; }
+      .lineup-preview { overflow:hidden; margin:7px 0 0; color:var(--muted); font-size:13px; line-height:1.45; white-space:nowrap; text-overflow:ellipsis; }
       .empty { padding:40px 16px; border:1px dashed #b9aae5; color:var(--muted); text-align:center; font-size:14px; }
       .viewer { overflow:hidden; border:1px solid #cdbef4; background:var(--panel); }
       .video-wrap { aspect-ratio:16 / 9; background:#e9e2fa; }
@@ -56,18 +70,18 @@
       .watch, .insta { display:inline-flex; padding:9px 12px; font-size:12px; font-weight:700; text-decoration:none; }
       .watch { border:1px solid var(--violet); color:#fff; background:var(--violet); }
       .watch:hover { background:#5f3eb2; }
-      .insta { border:1px solid #b49beb; border-left:0; color:var(--text); background:#fff; }
+      .insta { border:1px solid #b49beb; border-left:0; color:var(--text); background:var(--btn-bg); }
       .insta:hover { border-color:var(--violet); color:var(--violet); }
       .location { margin:0; color:var(--muted); font-size:14px; }
       .detail-line { height:1px; margin:20px 0; background:var(--line); }
-      .lineup-title { margin:0 0 8px; color:#756f85; font-size:11px; font-weight:800; letter-spacing:.12em; }
-      .lineup { margin:0; color:#312944; font-size:15px; line-height:1.65; }
+      .lineup-title { margin:0 0 8px; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.12em; }
+      .lineup { margin:0; color:var(--text); font-size:15px; line-height:1.65; }
       .detail-footer { margin-top:24px; }
       .mode { color:var(--muted); font-size:12px; }
-      .footer { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:30px; color:#756f85; font-size:11px; }
-      .footer-button { display:inline-flex; padding:9px 12px; border:1px solid #b49beb; color:#35206d; background:#fff; text-decoration:none; font-size:12px; font-weight:700; }
-      .footer-button:hover { border-color:var(--violet); background:#f2edff; }
-      @media (max-width:780px) { .shell { padding:22px 16px; } .topbar { align-items:start; flex-direction:column; min-height:150px; gap:8px; margin-bottom:22px; padding:18px; } .date { white-space:normal; } .layout { grid-template-columns:1fr; } .viewer { order:-1; } .details { padding:18px; } .club-card { padding:15px; } .footer { align-items:flex-start; flex-direction:column; } }
+      .footer { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:30px; color:var(--muted); font-size:11px; }
+      .footer-button { display:inline-flex; padding:9px 12px; border:1px solid #b49beb; color:var(--text); background:var(--btn-bg); text-decoration:none; font-size:12px; font-weight:700; }
+      .footer-button:hover { border-color:var(--violet); background:var(--filter-active); }
+      @media (max-width:780px) { .shell { padding:22px 16px; } .topbar { align-items:start; flex-direction:column; min-height:150px; gap:12px; margin-bottom:22px; padding:18px; } .topbar-right { width:100%; align-items:flex-start; } .date { white-space:normal; } .layout { grid-template-columns:1fr; } .viewer { order:-1; } .details { padding:18px; } .club-card { padding:15px; } .footer { align-items:flex-start; flex-direction:column; } }
     </style>
   </head>
   <body>
@@ -77,7 +91,19 @@
           <img class="lpl-logo" src="assets/lpl-logo.png" alt="LPL 로고" />
           <div><div class="eyebrow">INDEPENDENT MUSIC LIVE</div><h1>LPL</h1><p class="subtitle">Live Place Live</p></div>
         </div>
-        <div class="date" id="today"></div>
+        <div class="topbar-right">
+          <div class="top-controls">
+            <div class="lang-group" role="group" aria-label="Language">
+              <button type="button" class="lang-btn active" data-lang="ko">KO</button>
+              <button type="button" class="lang-btn" data-lang="en">EN</button>
+              <button type="button" class="lang-btn" data-lang="fr">FR</button>
+            </div>
+            <button type="button" class="theme-btn" id="themeToggle">
+              <span id="themeIcon">🌙</span> <span id="themeText">DARK</span>
+            </button>
+          </div>
+          <div class="date" id="today"></div>
+        </div>
       </header>
       <nav class="filters" aria-label="클럽 필터">
         <button class="filter active" data-filter="all">전체</button>
@@ -90,26 +116,33 @@
         <div class="club-list" id="clubList" aria-label="클럽 목록"></div>
         <article class="viewer" id="viewer" aria-live="polite"></article>
       </section>
-      <footer class="footer"><span>© 2026 1101STUDIO. All rights reserved.</span><a class="footer-button" href="https://forms.gle/ms5k5NFsjikTXJj57" target="_blank" rel="noopener noreferrer">라이브 클럽 등록 문의 →</a></footer>
+      <footer class="footer"><span>© 2026 1101STUDIO. All rights reserved.</span><a class="footer-button" id="footerInquiry" href="https://forms.gle/ms5k5NFsjikTXJj57" target="_blank" rel="noopener noreferrer">라이브 클럽 등록 문의 →</a></footer>
     </main>
 
 <script>
       const clubs = [
-        { id:"moonlight", category:"stage", name:"감성달빛", location:"서울 성북구", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
-        { id:"unplugged", category:"stage", name:"카페 언플러그드", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
-        { id:"bbang", category:"stage", name:"클럽 빵", location:"서울 마포구", isLive:false, liveVideoId:"", vodPlaylistId:"ULU-1Rejnev1Rrt3EUK_OEAg", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
-        { id:"studio1101", category:"stage", name:"1101스튜디오", location:"경기도 고양시", isLive:false, liveVideoId:"", vodPlaylistId:"", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"" },
-        { id:"browngongbang", category:"radio", name:"해원이의 갈색공방", location:"낭만을 꿈꾸고 있는가", isLive:false, liveVideoId:"", vodPlaylistId:"ULMmVUnhWtqnIKvaUXOD2eCQ", channelUrl:"https://www.youtube.com/@brown_gongbang", instagramUrl:"" },
-        { id:"ynonair", category:"radio", name:"연남별장OnAir", location:"", isLive:false, liveVideoId:"", vodPlaylistId:"UL8EkONIYIE09NGWDPwmRnEA", channelUrl:"https://www.youtube.com/@YN_OnAir", instagramUrl:"" },
-        { id:"moonlightradio", category:"radio", name:"감달라디오", location:"", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pYqtuPTTbxACAXrfY0GQOU1", channelUrl:"https://www.youtube.com/@ggamdal", instagramUrl:"" }
+        { id:"moonlight", category:"stage", name:"감성달빛", names:{ ko:"감성달빛", en:"Gamsung Dalbit", fr:"Gamsung Dalbit" }, location:"서울 성북구", locations:{ ko:"서울 성북구", en:"Seongbuk-gu, Seoul", fr:"Seongbuk-gu, Séoul" }, logo:"assets/logo-moonlight.png", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
+        { id:"unplugged", category:"stage", name:"카페 언플러그드", names:{ ko:"카페 언플러그드", en:"Cafe Unplugged", fr:"Café Unplugged" }, location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, logo:"assets/logo-unplugged.png", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
+        { id:"bbang", category:"stage", name:"클럽 빵", names:{ ko:"클럽 빵", en:"Club Bbang", fr:"Club Bbang" }, location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, logo:"assets/logo-bbang.png", isLive:false, liveVideoId:"", vodPlaylistId:"ULU-1Rejnev1Rrt3EUK_OEAg", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
+        { id:"studio1101", category:"stage", name:"1101스튜디오", names:{ ko:"1101스튜디오", en:"1101 STUDIO", fr:"1101 STUDIO" }, location:"경기도 고양시", locations:{ ko:"경기도 고양시", en:"Goyang-si, Gyeonggi", fr:"Goyang-si, Gyeonggi" }, logo:"assets/logo-1101.png", isLive:false, liveVideoId:"", vodPlaylistId:"", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"" },
+        { id:"browngongbang", category:"radio", name:"해원이의 갈색공방", names:{ ko:"해원이의 갈색공방", en:"Haewon's Brown Craft", fr:"L'Atelier Brun de Haewon" }, location:"낭만을 꿈꾸고 있는가", locations:{ ko:"낭만을 꿈꾸고 있는가", en:"Dreaming of Romance", fr:"Rêver de romance" }, logo:"assets/logo-browngongbang.png", isLive:false, liveVideoId:"", vodPlaylistId:"ULMmVUnhWtqnIKvaUXOD2eCQ", channelUrl:"https://www.youtube.com/@brown_gongbang", instagramUrl:"" },
+        { id:"ynonair", category:"radio", name:"연남별장OnAir", names:{ ko:"연남별장OnAir", en:"Yeonnam Villa OnAir", fr:"Villa Yeonnam OnAir" }, location:"", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-ynonair.png", isLive:false, liveVideoId:"", vodPlaylistId:"UL8EkONIYIE09NGWDPwmRnEA", channelUrl:"https://www.youtube.com/@YN_OnAir", instagramUrl:"" },
+        { id:"moonlightradio", category:"radio", name:"감달라디오", names:{ ko:"감달라디오", en:"Gamdal Radio", fr:"Radio Gamdal" }, location:"", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-moonlightradio.png", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pYqtuPTTbxACAXrfY0GQOU1", channelUrl:"https://www.youtube.com/@ggamdal", instagramUrl:"" }
       ];
 
+      const i18n = {
+        ko: { locale:"ko-KR", filterAll:"전체", filterLive:"🔴 실시간 라이브", filterVod:"▶ VOD 라디오", filterRadio:"📻 인디 라디오", liveStreaming:"라이브 스트리밍 중", vodPlaylist:"VOD 재생목록", radioPlaylist:"라디오 재생목록", empty:"이 조건에 맞는 클럽이 없습니다.", ytChannel:"YouTube 채널 바로가기 ↗", liveNowText:"실시간 라이브 송출 중", archiveSuffix:" 아카이브 재생목록 (플레이어 우측 상단 목록 버튼으로 선곡 가능)", modeLive:"현재 라이브 스트리밍 중", modeVod:"VOD 플레이리스트 재생 중", modeRadio:"라디오 플레이리스트 재생 중", inquiry:"라이브 클럽 등록 문의 →" },
+        en: { locale:"en-US", filterAll:"All", filterLive:"🔴 Live Now", filterVod:"▶ VOD Radio", filterRadio:"📻 Indie Radio", liveStreaming:"Live Streaming Now", vodPlaylist:"VOD Playlist", radioPlaylist:"Radio Playlist", empty:"No clubs match this filter.", ytChannel:"YouTube Channel ↗", liveNowText:"Streaming live now", archiveSuffix:" Archive Playlist (Use the top-right playlist icon in the player to select tracks)", modeLive:"Currently streaming live", modeVod:"Playing VOD playlist", modeRadio:"Playing Radio playlist", inquiry:"Club Registration Inquiry →" },
+        fr: { locale:"fr-FR", filterAll:"Tous", filterLive:"🔴 En Direct", filterVod:"▶ Radio VOD", filterRadio:"📻 Radio Indie", liveStreaming:"Diffusion en direct", vodPlaylist:"Playlist VOD", radioPlaylist:"Playlist Radio", empty:"Aucun club ne correspond à ce filtre.", ytChannel:"Chaîne YouTube ↗", liveNowText:"Diffusion en direct en cours", archiveSuffix:" Playlist d'archives (Utilisez l'icône en haut à droite du lecteur pour choisir un titre)", modeLive:"Actuellement en direct", modeVod:"Lecture de la playlist VOD", modeRadio:"Lecture de la playlist Radio", inquiry:"Inscrire un Live Club →" }
+      };
+
+      let currentLang = localStorage.getItem("lpl_lang") || "ko";
+      let currentTheme = localStorage.getItem("lpl_theme") || "light";
       let selectedId = clubs[0].id;
       let filter = "all";
       const list = document.querySelector("#clubList");
       const viewer = document.querySelector("#viewer");
 
-      document.querySelector("#today").textContent = new Intl.DateTimeFormat("ko-KR", { dateStyle:"full" }).format(new Date());
       document.querySelector("#localNote").hidden = location.protocol !== "file:";
 
       function embedUrl(club) {
@@ -125,40 +158,78 @@
         if (filter === "radio") return clubs.filter((club) => club.category === "radio");
         return clubs;
       }
+      function applyTheme(theme) {
+        currentTheme = theme;
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("lpl_theme", theme);
+        document.querySelector("#themeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
+        document.querySelector("#themeText").textContent = theme === "dark" ? "LIGHT" : "DARK";
+      }
+
+      function applyLangUI() {
+        const t = i18n[currentLang];
+        document.documentElement.lang = currentLang;
+        document.querySelector("#today").textContent = new Intl.DateTimeFormat(t.locale, { dateStyle:"full" }).format(new Date());
+        document.querySelector('[data-filter="all"]').textContent = t.filterAll;
+        document.querySelector('[data-filter="live"]').textContent = t.filterLive;
+        document.querySelector('[data-filter="vod"]').textContent = t.filterVod;
+        document.querySelector('[data-filter="radio"]').textContent = t.filterRadio;
+        document.querySelector("#footerInquiry").textContent = t.inquiry;
+        document.querySelectorAll(".lang-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.lang === currentLang));
+      }
 
       function render() {
+        const t = i18n[currentLang];
         const visible = filteredClubs();
         if (!visible.some((club) => club.id === selectedId)) selectedId = visible[0]?.id;
         const selected = clubs.find((club) => club.id === selectedId);
 
-        list.innerHTML = visible.length ? visible.map((club) => `
+        list.innerHTML = visible.length ? visible.map((club) => {
+          const isRadio = club.category === "radio";
+          const cName = club.names?.[currentLang] || club.name;
+          const cLoc = club.locations?.[currentLang] || club.location;
+          const bgLogo = club.logo ? `<span class="club-bg-logo" style="background-image:url('${club.logo}')" aria-hidden="true"></span>` : "";
+          const badge = club.isLive ? '<span class="live">🔴 LIVE</span>' : isRadio ? '<span class="vod">📻 RADIO</span>' : '<span class="vod">▶ VOD</span>';
+          const previewText = club.isLive ? t.liveStreaming : isRadio ? t.radioPlaylist : t.vodPlaylist;
+
+          return `
           <button class="club-card ${club.id === selectedId ? "selected" : ""}" data-id="${club.id}" aria-pressed="${club.id === selectedId}">
-            <div class="club-meta"><span class="area">${club.location}</span>${club.isLive ? '<span class="live">🔴 LIVE</span>' : '<span class="vod">▶ VOD</span>'}</div>
-            <h2 class="club-name">${club.name}</h2><p class="lineup-preview">${club.isLive ? "라이브 스트리밍 중" : "VOD 재생목록"}</p>
-          </button>`).join("") : '<div class="empty">이 조건에 맞는 클럽이 없습니다.</div>';
+            ${bgLogo}
+            <div class="club-meta"><span class="area">${cLoc}</span>${badge}</div>
+            <h2 class="club-name">${cName}</h2><p class="lineup-preview">${previewText}</p>
+          </button>`;
+        }).join("") : `<div class="empty">${t.empty}</div>`;
 
         if (!selected) {
           viewer.innerHTML = "";
           return;
         }
 
+        const isSelectedRadio = selected.category === "radio";
+        const sName = selected.names?.[currentLang] || selected.name;
+        const sLoc = selected.locations?.[currentLang] || selected.location;
+        const viewerHeaderLabel = selected.isLive ? "ON AIR · LIVE STAGE" : isSelectedRadio ? "RADIO · ARCHIVE" : "VOD RADIO · ARCHIVE";
+        const instaBtn = selected.instagramUrl ? `<a class="insta" href="${selected.instagramUrl}" target="_blank" rel="noopener noreferrer">Instagram ↗</a>` : "";
+        const footerModeText = selected.isLive ? t.modeLive : isSelectedRadio ? t.modeRadio : t.modeVod;
+
         viewer.innerHTML = `
           <div class="video-wrap">
             <iframe 
               src="${embedUrl(selected)}" 
-              title="${selected.name} 플레이어" 
+              title="${sName} 플레이어" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
               allowfullscreen>
             </iframe>
           </div>
           <div class="details">
-            <div class="viewer-label"><span>${selected.isLive ? "ON AIR · LIVE STAGE" : "VOD RADIO · ARCHIVE"}</span>${selected.isLive ? '<span class="live">🔴 LIVE</span>' : ''}</div>
-            <h2>${selected.name}</h2>
-            <div class="details-actions"><a class="watch" href="${selected.channelUrl}" target="_blank" rel="noopener noreferrer">YouTube 채널 바로가기 ↗</a><a class="insta" href="${selected.instagramUrl}" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div>
-            <p class="location">${selected.location}</p><div class="detail-line"></div>
+            <div class="viewer-label"><span>${viewerHeaderLabel}</span>${selected.isLive ? '<span class="live">🔴 LIVE</span>' : ''}</div>
+            <h2>${sName}</h2>
+            <div class="details-actions"><a class="watch" href="${selected.channelUrl}" target="_blank" rel="noopener noreferrer">${t.ytChannel}</a>${instaBtn}</div>
+            ${sLoc ? `<p class="location">${sLoc}</p>` : ""}
+            <div class="detail-line"></div>
             <p class="lineup-title">${selected.isLive ? "LIVE NOW" : "NOW PLAYING"}</p>
-            <p class="lineup" id="nowPlaying">${selected.isLive ? "실시간 라이브 송출 중" : selected.name + " 아카이브 재생목록 (플레이어 우측 상단 목록 버튼으로 선곡 가능)"}</p>
-            <div class="detail-footer"><span class="mode">${selected.isLive ? "현재 라이브 스트리밍 중" : "VOD 플레이리스트 재생 중"}</span></div>
+            <p class="lineup" id="nowPlaying">${selected.isLive ? t.liveNowText : sName + t.archiveSuffix}</p>
+            <div class="detail-footer"><span class="mode">${footerModeText}</span></div>
           </div>`;
       }
 
@@ -178,6 +249,21 @@
         }
       });
 
+      document.querySelector("#themeToggle").addEventListener("click", () => {
+        applyTheme(currentTheme === "dark" ? "light" : "dark");
+      });
+
+      document.querySelector(".lang-group").addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-lang]");
+        if (!btn) return;
+        currentLang = btn.dataset.lang;
+        localStorage.setItem("lpl_lang", currentLang);
+        applyLangUI();
+        render();
+      });
+
+      applyTheme(currentTheme);
+      applyLangUI();
       render();
     </script>
   </body>

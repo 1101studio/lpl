@@ -138,7 +138,7 @@
 
       let currentLang = localStorage.getItem("lpl_lang") || "ko";
       let currentTheme = localStorage.getItem("lpl_theme") || "light";
-      let selectedId = clubs[0].id;
+      let selectedId = (clubs.find((c) => c.isLive)?.id) || clubs[0].id;
       let filter = "all";
       const list = document.querySelector("#clubList");
       const viewer = document.querySelector("#viewer");
@@ -156,11 +156,19 @@
       }
 
       function filteredClubs() {
-        if (filter === "live") return clubs.filter((club) => club.isLive);
-        if (filter === "vod") return clubs.filter((club) => club.category !== "radio" && !club.isLive);
-        if (filter === "radio") return clubs.filter((club) => club.category === "radio");
-        return clubs;
-      }
+        let result = [];
+        if (filter === "radio") {
+          result = clubs.filter((club) => club.category === "radio");
+        } else {
+          const stages = clubs.filter((club) => club.category === "stage");
+          if (filter === "live") result = stages.filter((club) => club.isLive);
+          else if (filter === "vod") result = stages.filter((club) => !club.isLive);
+          else result = stages;
+          }
+
+        // 라이브 중인 채널(isLive: true)을 목록 최상단으로 우선 정렬
+          return result.sort((a, b) => (b.isLive ? 1 : 0) - (a.isLive ? 1 : 0));
+        }
       function applyTheme(theme) {
         currentTheme = theme;
         document.documentElement.setAttribute("data-theme", theme);

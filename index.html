@@ -42,20 +42,39 @@
       .local-note code { color:#35206d; }
       .layout { display:grid; grid-template-columns:minmax(280px,.77fr) minmax(480px,1.23fr); gap:18px; align-items:start; }
       .club-list { display:grid; gap:0; }
-      .club-card { position:relative; overflow:hidden; width:100%; text-align:left; padding:18px; border:1px solid var(--line); border-radius:0; color:var(--text); background:var(--card-bg); transition:border .2s,transform .2s,background .2s; }
+      .club-card { position:relative; overflow:hidden; width:100%; text-align:left; padding:18px; border:1px solid var(--line); border-radius:0; color:var(--text); background:var(--card-bg); transition:border .2s,transform .2s,background .2s,box-shadow .2s; }
       .club-card + .club-card { border-top:0; }
-      .club-card:hover { border-color:#b49beb; transform:translateY(-1px); }
-      .club-card.selected { border-color:#987ce5; background:var(--card-selected); box-shadow:inset 3px 0 0 var(--violet); }
+      .club-card:hover { border-color:#b49beb; transform:translateY(-1px); z-index:2; }
+      .club-card.selected { border-color:#987ce5; background:var(--card-selected); box-shadow:inset 4px 0 0 var(--violet); z-index:3; }
+
+      /* 🔴 LIVE 상자 전체 강조 스타일 */
+      .club-card.is-live { border-color:rgba(226,61,97,.45); background:linear-gradient(120deg,rgba(226,61,97,.09),var(--panel) 70%); box-shadow:inset 4px 0 0 var(--red); animation:liveCardPulse 2.4s ease-in-out infinite; }
+      .club-card.is-live:hover, .club-card.is-live.selected { border-color:var(--red); background:linear-gradient(120deg,rgba(226,61,97,.16),var(--panel) 80%); box-shadow:inset 5px 0 0 var(--red), 0 4px 18px rgba(226,61,97,.15); }
+      [data-theme="dark"] .club-card.is-live { background:linear-gradient(120deg,rgba(226,61,97,.18),var(--panel) 75%); }
+      [data-theme="dark"] .club-card.is-live.selected { background:linear-gradient(120deg,rgba(226,61,97,.26),var(--panel) 85%); }
+
+      /* 📻 RADIO 상자 전체 구분 스타일 (따뜻한 앰버/오렌지 톤) */
+      .club-card.is-radio { background:linear-gradient(120deg,rgba(217,119,6,.06),var(--panel) 70%); box-shadow:inset 3px 0 0 #d97706; }
+      .club-card.is-radio:hover, .club-card.is-radio.selected { border-color:#d97706; background:linear-gradient(120deg,rgba(217,119,6,.14),var(--panel) 80%); box-shadow:inset 4px 0 0 #d97706; }
+      [data-theme="dark"] .club-card.is-radio { background:linear-gradient(120deg,rgba(245,158,11,.11),var(--panel) 75%); box-shadow:inset 3px 0 0 #f59e0b; }
+      [data-theme="dark"] .club-card.is-radio:hover, [data-theme="dark"] .club-card.is-radio.selected { border-color:#f59e0b; background:linear-gradient(120deg,rgba(245,158,11,.2),var(--panel) 85%); box-shadow:inset 4px 0 0 #f59e0b; }
+
       .club-card > *:not(.club-bg-logo) { position:relative; z-index:1; }
       .club-bg-logo { position:absolute; right:-8px; bottom:-12px; width:115px; height:115px; background-size:contain; background-repeat:no-repeat; background-position:center; opacity:.09; filter:blur(1.5px) grayscale(20%); pointer-events:none; z-index:0; transition:transform .3s ease,opacity .3s ease,filter .3s ease; }
       [data-theme="dark"] .club-bg-logo { opacity:.14; }
       .club-card:hover .club-bg-logo, .club-card.selected .club-bg-logo { transform:scale(1.08); opacity:.18; filter:blur(.5px) grayscale(0%); }
       .club-meta { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:18px; }
       .area { color:var(--muted); font-size:12px; }
-      .live, .vod { display:inline-flex; align-items:center; font-size:11px; font-weight:800; letter-spacing:.06em; }
-      .live { color:var(--red); animation:blink 1.3s ease-in-out infinite; }
-      .vod { color:#6d50b8; }
-      @keyframes blink { 50% { opacity:.35; } }
+
+      /* 배지 캡슐화 (LIVE / VOD / RADIO 명확히 구분) */
+      .live, .vod, .radio-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; font-size:10px; font-weight:800; letter-spacing:.06em; }
+      .live { color:#fff; background:var(--red); box-shadow:0 0 10px rgba(226,61,97,.45); animation:blink 1.4s ease-in-out infinite; }
+      .vod { color:var(--violet); background:rgba(118,86,201,.1); border:1px solid rgba(118,86,201,.28); }
+      .radio-badge { color:#b45309; background:rgba(217,119,6,.12); border:1px solid rgba(217,119,6,.35); }
+      [data-theme="dark"] .radio-badge { color:#fbbf24; background:rgba(245,158,11,.16); border-color:rgba(245,158,11,.4); }
+
+      @keyframes blink { 50% { opacity:.55; } }
+      @keyframes liveCardPulse { 0%, 100% { box-shadow:inset 4px 0 0 var(--red), 0 0 0 rgba(226,61,97,0); } 50% { box-shadow:inset 4px 0 0 var(--red), 0 0 14px rgba(226,61,97,.22); } }
       .club-name { margin:0; font-size:23px; font-weight:750; letter-spacing:-.04em; }
       .lineup-preview { overflow:hidden; margin:7px 0 0; color:var(--muted); font-size:13px; line-height:1.45; white-space:nowrap; text-overflow:ellipsis; }
       .empty { padding:40px 16px; border:1px dashed #b9aae5; color:var(--muted); text-align:center; font-size:14px; }
@@ -157,18 +176,19 @@
 
       function filteredClubs() {
         let result = [];
-        if (filter === "radio") {
+        if (filter === "live") {
+          result = clubs.filter((club) => club.isLive);
+        } else if (filter === "vod") {
+          result = clubs.filter((club) => club.category === "stage" && !club.isLive);
+        } else if (filter === "radio") {
           result = clubs.filter((club) => club.category === "radio");
         } else {
-          const stages = clubs.filter((club) => club.category === "stage");
-          if (filter === "live") result = stages.filter((club) => club.isLive);
-          else if (filter === "vod") result = stages.filter((club) => !club.isLive);
-          else result = stages;
-          }
+          result = [...clubs]; // "전체"일 때 공연장 + 라디오 전부 포함
+        }
 
         // 라이브 중인 채널(isLive: true)을 목록 최상단으로 우선 정렬
-          return result.sort((a, b) => (b.isLive ? 1 : 0) - (a.isLive ? 1 : 0));
-        }
+        return result.sort((a, b) => (b.isLive ? 1 : 0) - (a.isLive ? 1 : 0));
+      }
       function applyTheme(theme) {
         currentTheme = theme;
         document.documentElement.setAttribute("data-theme", theme);
@@ -197,14 +217,15 @@
 
         list.innerHTML = visible.length ? visible.map((club) => {
           const isRadio = club.category === "radio";
+          const typeClass = club.isLive ? "is-live" : isRadio ? "is-radio" : "is-vod";
           const cName = club.names?.[currentLang] || club.name;
           const cLoc = club.locations?.[currentLang] || club.location;
           const bgLogo = club.logo ? `<span class="club-bg-logo" style="background-image:url('${club.logo}')" aria-hidden="true"></span>` : "";
-          const badge = club.isLive ? '<span class="live">🔴 LIVE</span>' : isRadio ? '<span class="vod">📻 RADIO</span>' : '<span class="vod">▶ VOD</span>';
+          const badge = club.isLive ? '<span class="live">● ON AIR LIVE</span>' : isRadio ? '<span class="radio-badge">📻 RADIO</span>' : '<span class="vod">▶ STAGE VOD</span>';
           const previewText = club.isLive ? t.liveStreaming : isRadio ? t.radioPlaylist : t.vodPlaylist;
 
           return `
-          <button class="club-card ${club.id === selectedId ? "selected" : ""}" data-id="${club.id}" aria-pressed="${club.id === selectedId}">
+          <button class="club-card ${typeClass} ${club.id === selectedId ? "selected" : ""}" data-id="${club.id}" aria-pressed="${club.id === selectedId}">
             ${bgLogo}
             <div class="club-meta"><span class="area">${cLoc}</span>${badge}</div>
             <h2 class="club-name">${cName}</h2><p class="lineup-preview">${previewText}</p>

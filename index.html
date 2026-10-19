@@ -140,13 +140,112 @@
 
 <script>
       const clubs = [
-        { id:"moonlight", category:"stage", name:"감성달빛", names:{ ko:"감성달빛", en:"Gamsung Dalbit", fr:"Gamsung Dalbit" }, location:"서울 성북구", locations:{ ko:"서울 성북구", en:"Seongbuk-gu, Seoul", fr:"Seongbuk-gu, Séoul" }, logo:"assets/logo-moonlight.jpg", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO", channelUrl:"https://www.youtube.com/@ggamdal/featured", instagramUrl:"https://www.instagram.com/gamdal_official/" },
-        { id:"unplugged", category:"stage", name:"카페 언플러그드", names:{ ko:"카페 언플러그드", en:"Cafe Unplugged", fr:"Café Unplugged" }, location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, logo:"assets/logo-unplugged.jpg", isLive:false, liveVideoId:"", vodPlaylistId:"PLgJpmdu22Hg-TaxADyS7u4ptsjKfTdTDu", channelUrl:"https://www.youtube.com/@cafeunplugged1", instagramUrl:"https://www.instagram.com/cafeunplugged/" },
-        { id:"bbang", category:"stage", name:"클럽 빵", names:{ ko:"클럽 빵", en:"Club Bbang", fr:"Club Bbang" }, location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, logo:"assets/logo-bbang.jpg", isLive:false, liveVideoId:"vEptIV2cYns", vodPlaylistId:"PLTD-cs7VGQsc", channelUrl:"https://www.youtube.com/@clubbbang/featured", instagramUrl:"https://www.instagram.com/clubbbang/" },
-        { id:"studio1101", category:"stage", name:"1101스튜디오", names:{ ko:"1101스튜디오", en:"1101 STUDIO", fr:"1101 STUDIO" }, location:"경기도 고양시", locations:{ ko:"경기도 고양시", en:"Goyang-si, Gyeonggi", fr:"Goyang-si, Gyeonggi" }, logo:"assets/logo-1101.png", isLive:false, liveVideoId:"", vodPlaylistId:"", channelUrl:"https://www.youtube.com/@LivePlaceLive", instagramUrl:"" },
-        { id:"browngongbang", category:"radio", name:"낭만을 꿈꾸고 있는가", names:{ ko:"낭만을 꿈꾸고 있는가", en:"Dreaming of Romance", fr:"Rêver de romance" }, location:"해원이의 갈색공방", locations:{ ko:"해원이의 갈색공방", en:"Haewon's Brown Craft", fr:"L'Atelier Brun de Haewon" }, logo:"assets/logo-browngongbang.jpg", isLive:false, liveVideoId:"", vodPlaylistId:"PLVu6Cn3jmS1I", channelUrl:"https://www.youtube.com/@brown_gongbang", instagramUrl:"" },
-        { id:"ynonair", category:"radio", name:"연남별장OnAir", names:{ ko:"연남별장OnAir", en:"Yeonnam Villa OnAir", fr:"Villa Yeonnam OnAir" }, location:"", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-ynonair.jpg", isLive:false, liveVideoId:"", vodPlaylistId:"PLFC38UdSqYhw", channelUrl:"https://www.youtube.com/@YN_OnAir", instagramUrl:"" },
-        { id:"moonlightradio", category:"radio", name:"감달라디오", names:{ ko:"감달라디오", en:"Gamdal Radio", fr:"Radio Gamdal" }, location:"", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-moonlight.jpg", isLive:false, liveVideoId:"", vodPlaylistId:"PLBkp9RLB61pYqtuPTTbxACAXrfY0GQOU1", channelUrl:"https://www.youtube.com/@ggamdal", instagramUrl:"" }
+        { id:"moonlight", 
+         category:"stage", 
+         name:"감성달빛", names:{ ko:"감성달빛", en:"Gamsung Dalbit", fr:"Gamsung Dalbit" }, 
+         location:"서울 성북구", locations:{ ko:"서울 성북구", en:"Seongbuk-gu, Seoul", fr:"Seongbuk-gu, Séoul" }, 
+         logo:"assets/logo-moonlight.jpg", 
+         channelUrl:"https://www.youtube.com/@ggamdal/featured", 
+         instagramUrl:"https://www.instagram.com/gamdal_official/",
+         vodVideos: [
+            "https://www.youtube.com/watch?v=n1qohNzRikI",
+            "https://www.youtube.com/watch?v=UqDhUqmo5MM",
+            "https://www.youtube.com/watch?v=T5GJ3gXUhb0",
+            "https://www.youtube.com/watch?v=Aidk3FjGW90",
+            "https://www.youtube.com/watch?v=LgMGj_-1xMk"
+          ] 
+           },
+        
+        { id:"unplugged", 
+         category:"stage", 
+         name:"카페 언플러그드", names:{ ko:"카페 언플러그드", en:"Cafe Unplugged", fr:"Café Unplugged" }, 
+         location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, 
+         logo:"assets/logo-unplugged.jpg", 
+         channelUrl:"https://www.youtube.com/@cafeunplugged1", 
+         instagramUrl:"https://www.instagram.com/cafeunplugged/",
+         vodVideos: [
+            "https://www.youtube.com/watch?v=ZAXnW558zGk",
+            "https://www.youtube.com/watch?v=j5hliW9PTxU",
+            "https://www.youtube.com/watch?v=FZQcBxoFo-o",
+            "https://www.youtube.com/watch?v=2is5l_CrvMs",
+            "https://www.youtube.com/watch?v=KpvrWBnPngs"
+          ]  
+        },
+        
+        { id:"bbang", 
+         category:"stage", 
+         name:"클럽 빵", names:{ ko:"클럽 빵", en:"Club Bbang", fr:"Club Bbang" }, 
+         location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, 
+         logo:"assets/logo-bbang.jpg", 
+         channelUrl:"https://www.youtube.com/@clubbbang/featured", 
+         instagramUrl:"https://www.instagram.com/clubbbang/",
+         vodVideos: [
+            "https://www.youtube.com/watch?v=vVhK2MziNOs",
+            "https://www.youtube.com/watch?v=SnbvmPqSsFU",
+            "https://www.youtube.com/watch?v=ayLUIyp1SEM",
+            "https://www.youtube.com/watch?v=AUvlXL4f31c",
+            "https://www.youtube.com/watch?v=khdsHGGd1lQ"
+          ] 
+        },
+        
+        { id:"studio1101", 
+         category:"stage", 
+         name:"1101스튜디오", names:{ ko:"1101스튜디오", en:"1101 STUDIO", fr:"1101 STUDIO" }, 
+         location:"경기도 고양시", locations:{ ko:"경기도 고양시", en:"Goyang-si, Gyeonggi", fr:"Goyang-si, Gyeonggi" }, 
+         logo:"assets/logo-1101.png", 
+         channelUrl:"https://www.youtube.com/@LivePlaceLive", 
+         instagramUrl:"",
+         vodVideos: [
+            ""
+          ] 
+        },
+        
+        { id:"browngongbang", 
+         category:"radio", 
+         name:"낭만을 꿈꾸고 있는가", names:{ ko:"낭만을 꿈꾸고 있는가", en:"Dreaming of Romance", fr:"Rêver de romance" }, 
+         location:"해원이의 갈색공방", locations:{ ko:"해원이의 갈색공방", en:"Haewon's Brown Craft", fr:"L'Atelier Brun de Haewon" }, 
+         logo:"assets/logo-browngongbang.jpg", 
+         channelUrl:"https://www.youtube.com/@brown_gongbang", 
+         instagramUrl:"",
+         vodVideos: [
+            "https://www.youtube.com/watch?v=1xc93cM9BfQ",
+            "https://www.youtube.com/watch?v=2Hmvs9xixYg",
+            "https://www.youtube.com/watch?v=Ni2E2znBAkE",
+            "https://www.youtube.com/watch?v=69qSpCVQLN4",
+            "https://www.youtube.com/watch?v=hOkan8HnFVw"
+          ]  
+        },
+        
+        { id:"ynonair", 
+         category:"radio", 
+         name:"연남별장OnAir", names:{ ko:"연남별장OnAir", en:"Yeonnam Villa OnAir", fr:"Villa Yeonnam OnAir" }, 
+         location:"", locations:{ ko:"", en:"", fr:"" }, 
+         logo:"assets/logo-ynonair.jpg", 
+         channelUrl:"https://www.youtube.com/@YN_OnAir", 
+         instagramUrl:"",
+         vodVideos: [
+            "https://www.youtube.com/watch?v=CNuZh8UKiFI",
+            "https://www.youtube.com/watch?v=2VZaVzz9WuU",
+            "https://www.youtube.com/watch?v=b2-bTNgNDVA",
+            "https://www.youtube.com/watch?v=1qU6mUHRJ4A",
+            "https://www.youtube.com/watch?v=Qeng_yYRZEQ"
+          ] 
+        },
+        
+        { id:"moonlightradio", 
+         category:"radio", 
+         name:"감달라디오", names:{ ko:"감달라디오", en:"Gamdal Radio", fr:"Radio Gamdal" }, 
+         location:"", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-moonlight.jpg", 
+         channelUrl:"https://www.youtube.com/@ggamdal", 
+         instagramUrl:"",
+         vodVideos: [
+            "https://www.youtube.com/live/ftZp21CwIM8",
+            "https://www.youtube.com/live/5xNeicF3QyI",
+            "https://www.youtube.com/live/yNkd9fFsYT8",
+            "https://www.youtube.com/live/3s7cnl6-UOs",
+            "https://www.youtube.com/live/PjdQF17LnHc"
+          ] 
+        }
       ];
 
       const i18n = {
@@ -166,14 +265,37 @@
 
       function embedUrl(club) {
         const origin = location.protocol.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
+        
+        // 1. 현재 라이브 중이면 실시간 영상 바로 재생
         if (club.isLive && club.liveVideoId) {
           return `https://www.youtube.com/embed/${club.liveVideoId}?rel=0&modestbranding=1${origin}`;
         }
-        // 1번부터 15번 영상 중 하나를 무작위로 선택해서 시작
-        const randomIndex = Math.floor(Math.random() * 15) + 1;
-        return `https://www.youtube.com/embed/videoseries?list=${club.vodPlaylistId}&index=${randomIndex}&rel=0&modestbranding=1${origin}`;
-      }
+        
+        // 2. VOD 영상 목록이 있으면 무작위로 섞어서 연속 재생 플레이리스트 구성
+        if (club.vodVideos && club.vodVideos.length > 0) {
+          // 유튜브 주소나 ID에서 11자리 영상 ID만 깔끔하게 추출하는 함수
+          const extractId = (str) => {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = str.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : str;
+          };
 
+          const videoIds = club.vodVideos.map(v => extractId(v));
+          
+          // 접속할 때마다 순서를 무작위로 섞음 (Shuffle)
+          const shuffled = [...videoIds].sort(() => Math.random() - 0.5);
+          const firstVideo = shuffled[0];
+          const restVideos = shuffled.slice(1).join(",");
+          
+          // 첫 곡이 끝나면 섞인 나머지 곡들이 자연스럽게 이어지도록 플레이리스트 파라미터 조합
+          const playlistParam = restVideos ? `&playlist=${restVideos}` : "";
+          return `https://www.youtube.com/embed/${firstVideo}?rel=0&modestbranding=1${playlistParam}${origin}`;
+        }
+
+        // 3. 만약 VOD 목록이 비어있을 때의 안전 장치 (채널 홈 대표 영상 등으로 폴백)
+        return `https://www.youtube.com/embed/videoseries?list=PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO&rel=0&modestbranding=1${origin}`;
+      }
+  
       function filteredClubs() {
         let result = [];
         if (filter === "live") {
@@ -297,6 +419,32 @@
       applyTheme(currentTheme);
       applyLangUI();
       render();
+  
+  // 구글 앱 스크립트(GAS) 웹 앱에서 최신 실시간 라이브 상태를 비동기로 받아와 반영
+      async function fetchLiveStatus() {
+        try {
+          const GAS_URL = "https://script.google.com/macros/s/AKfycbxupLerRCH0yGomnjJXiJ1A3-F5Oz29V_FKklY7E_LOL8YKfdL-F6cjYDvOBh1wm18f_A/exec";
+          const res = await fetch(GAS_URL);
+          const data = await res.json();
+          
+          if (data && data.clubs) {
+            // clubs 배열의 각 채널에 GAS가 가져온 라이브 상태(isLive, liveVideoId) 덮어쓰기
+            clubs.forEach(club => {
+              if (data.clubs[club.id]) {
+                club.isLive = data.clubs[club.id].isLive;
+                club.liveVideoId = data.clubs[club.id].liveVideoId;
+              }
+            });
+            // 상태가 업데이트되었으므로 화면을 다시 렌더링하여 라이브 채널을 최상단으로 이동
+            render();
+          }
+        } catch (e) {
+          console.log("라이브 상태 동기화 실패:", e);
+        }
+      }
+
+      // 페이지가 열릴 때 즉시 라이브 상태 확인 후 렌더링
+      fetchLiveStatus();
     </script>
   </body>
 </html>

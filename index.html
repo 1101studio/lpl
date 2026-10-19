@@ -106,9 +106,9 @@
   <body>
     <main class="shell">
       <header class="topbar">
-        <div class="brand-lockup">
+        <div class="brand-lockup" onclick="location.reload()" style="cursor:pointer;" title="새로고침">
           <img class="lpl-logo" src="assets/lpl-logo.png" alt="LPL 로고" />
-          <div><div class="eyebrow">INDEPENDENT MUSIC LIVE</div><h1>LPL</h1><p class="subtitle">Live Place Live</p></div>
+          <div><div class="eyebrow">인디 라이브 모아보기</div><h1>LPL</h1><p class="subtitle">Live Place Live</p></div>
         </div>
         <div class="topbar-right">
           <div class="top-controls">
@@ -239,11 +239,11 @@
          channelUrl:"https://www.youtube.com/@ggamdal", 
          instagramUrl:"",
          vodVideos: [
-            "https://www.youtube.com/live/ftZp21CwIM8",
-            "https://www.youtube.com/live/5xNeicF3QyI",
-            "https://www.youtube.com/live/yNkd9fFsYT8",
-            "https://www.youtube.com/live/3s7cnl6-UOs",
-            "https://www.youtube.com/live/PjdQF17LnHc"
+            "https://www.youtube.com/watch?v=ftZp21CwIM8&t=2745s",
+            "https://www.youtube.com/watch?v=5xNeicF3QyI&t=5s",
+            "https://www.youtube.com/watch?v=yNkd9fFsYT8&t=1677s",
+            "https://www.youtube.com/watch?v=3s7cnl6-UOs&t=1898s",
+            "https://www.youtube.com/watch?v=PjdQF17LnHc&t=434s"
           ] 
         }
       ];
@@ -258,6 +258,7 @@
       let currentTheme = localStorage.getItem("lpl_theme") || "dark";
       let selectedId = (clubs.find((c) => c.isLive)?.id) || clubs[0].id;
       let filter = "all";
+      const cachedVods = {};
       const list = document.querySelector("#clubList");
       const viewer = document.querySelector("#viewer");
 
@@ -266,33 +267,33 @@
       function embedUrl(club) {
         const origin = location.protocol.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
         
-        // 1. 현재 라이브 중이면 실시간 영상 바로 재생
         if (club.isLive && club.liveVideoId) {
           return `https://www.youtube.com/embed/${club.liveVideoId}?rel=0&modestbranding=1${origin}`;
         }
         
-        // 2. VOD 영상 목록이 있으면 무작위로 섞어서 연속 재생 플레이리스트 구성
         if (club.vodVideos && club.vodVideos.length > 0) {
-          // 유튜브 주소나 ID에서 11자리 영상 ID만 깔끔하게 추출하는 함수
-          const extractId = (str) => {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = str.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : str;
-          };
+          // 이미 이 클럽의 랜덤 재생 순서가 결정되어 있다면 그것을 그대로 사용 (새로고침 전까지 고정)
+          if (!cachedVods[club.id]) {
+            const extractId = (str) => {
+              const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+              const match = str.match(regExp);
+              return (match && match[2].length === 11) ? match[2] : str;
+            };
 
-          const videoIds = club.vodVideos.map(v => extractId(v));
-          
-          // 접속할 때마다 순서를 무작위로 섞음 (Shuffle)
-          const shuffled = [...videoIds].sort(() => Math.random() - 0.5);
-          const firstVideo = shuffled[0];
-          const restVideos = shuffled.slice(1).join(",");
-          
-          // 첫 곡이 끝나면 섞인 나머지 곡들이 자연스럽게 이어지도록 플레이리스트 파라미터 조합
-          const playlistParam = restVideos ? `&playlist=${restVideos}` : "";
-          return `https://www.youtube.com/embed/${firstVideo}?rel=0&modestbranding=1${playlistParam}${origin}`;
+            const videoIds = club.vodVideos.map(v => extractId(v));
+            // 딱 한 번만 무작위로 섞음
+            const shuffled = [...videoIds].sort(() => Math.random() - 0.5);
+            cachedVods[club.id] = {
+              first: shuffled[0],
+              rest: shuffled.slice(1).join(",")
+            };
+          }
+
+          const vod = cachedVods[club.id];
+          const playlistParam = vod.rest ? `&playlist=${vod.rest}` : "";
+          return `https://www.youtube.com/embed/${vod.first}?rel=0&modestbranding=1${playlistParam}${origin}`;
         }
 
-        // 3. 만약 VOD 목록이 비어있을 때의 안전 장치 (채널 홈 대표 영상 등으로 폴백)
         return `https://www.youtube.com/embed/videoseries?list=PLBkp9RLB61pZzW5qj4yY-ziPsaHawVQhO&rel=0&modestbranding=1${origin}`;
       }
   

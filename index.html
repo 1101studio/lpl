@@ -200,7 +200,7 @@
                 
         { id:"channel1969", 
          category:"stage", 
-         name:"채널1969", names:{ ko:"연남별장 버스킹", en:"Busking YNonair", fr:"YNonair Busking" }, 
+         name:"채널1969", names:{ ko:"채널1969", en:"Channel1969", fr:"Channel1969" }, 
          location:"서울 마포구", locations:{ ko:"서울 마포구", en:"Mapo-gu, Seoul", fr:"Mapo-gu, Séoul" }, logo:"assets/logo-channel1969.jpg", 
          channelUrl:"https://www.youtube.com/@channel1969", 
          instagramUrl:"https://www.instagram.com/channel1969.seoul/",
@@ -216,7 +216,7 @@
         { id:"studio1101", 
          category:"stage", 
          name:"1101스튜디오", names:{ ko:"1101스튜디오", en:"1101 STUDIO", fr:"1101 STUDIO" }, 
-         location:"경기도 고양시", locations:{ ko:"경기도 고양시", en:"Goyang-si, Gyeonggi", fr:"Goyang-si, Gyeonggi" }, 
+         location:"LPL", locations:{ ko:"", en:"", fr:"" }, 
          logo:"assets/logo-1101.png", 
          channelUrl:"https://www.youtube.com/@LivePlaceLive", 
          instagramUrl:"",
@@ -228,7 +228,7 @@
         { id:"ynonairbusking", 
          category:"stage", 
          name:"연남별장 버스킹", names:{ ko:"연남별장 버스킹", en:"Busking YNonair", fr:"YNonair Busking" }, 
-         location:"", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-ynonair.jpg", 
+         location:"연남별장OnAir", locations:{ ko:"", en:"", fr:"" }, logo:"assets/logo-ynonair.jpg", 
          channelUrl:"https://www.youtube.com/@YN_OnAir", 
          instagramUrl:"",
          vodVideos: [
@@ -334,9 +334,9 @@
       ];
 
       const i18n = {
-        ko: { locale:"ko-KR", filterAll:"전체", filterLive:"🔴 실시간 라이브", filterVod:"▶ VOD 라디오", filterRadio:"📻 인디 라디오", liveStreaming:"라이브 스트리밍 중", vodPlaylist:"VOD 재생목록", radioPlaylist:"라디오 재생목록", empty:"이 조건에 맞는 클럽이 없습니다.", ytChannel:"YouTube 채널 바로가기 ↗", liveNowText:"실시간 라이브 송출 중", archiveSuffix:" 아카이브 재생목록 (플레이어 우측 상단 목록 버튼으로 선곡 가능)", modeLive:"현재 라이브 스트리밍 중", modeVod:"VOD 플레이리스트 재생 중", modeRadio:"라디오 플레이리스트 재생 중", inquiry:"라이브 클럽 등록 문의 →" },
-        en: { locale:"en-US", filterAll:"All", filterLive:"🔴 Live Now", filterVod:"▶ VOD Radio", filterRadio:"📻 Indie Radio", liveStreaming:"Live Streaming Now", vodPlaylist:"VOD Playlist", radioPlaylist:"Radio Playlist", empty:"No clubs match this filter.", ytChannel:"YouTube Channel ↗", liveNowText:"Streaming live now", archiveSuffix:" Archive Playlist (Use the top-right playlist icon in the player to select tracks)", modeLive:"Currently streaming live", modeVod:"Playing VOD playlist", modeRadio:"Playing Radio playlist", inquiry:"Club Registration Inquiry →" },
-        fr: { locale:"fr-FR", filterAll:"Tous", filterLive:"🔴 En Direct", filterVod:"▶ Radio VOD", filterRadio:"📻 Radio Indie", liveStreaming:"Diffusion en direct", vodPlaylist:"Playlist VOD", radioPlaylist:"Playlist Radio", empty:"Aucun club ne correspond à ce filtre.", ytChannel:"Chaîne YouTube ↗", liveNowText:"Diffusion en direct en cours", archiveSuffix:" Playlist d'archives (Utilisez l'icône en haut à droite du lecteur pour choisir un titre)", modeLive:"Actuellement en direct", modeVod:"Lecture de la playlist VOD", modeRadio:"Lecture de la playlist Radio", inquiry:"Inscrire un Live Club →" }
+        ko: { locale:"ko-KR", filterAll:"전체", filterLive:"🔴 실시간 라이브", filterVod:"▶ VOD 다시보기", filterRadio:"📻 인디 라디오", liveStreaming:"라이브 스트리밍 중", vodPlaylist:"VOD 재생목록", radioPlaylist:"라디오 재생목록", empty:"이 조건에 맞는 클럽이 없습니다.", ytChannel:"YouTube 채널 바로가기 ↗", liveNowText:"실시간 라이브 송출 중", archiveSuffix:" VOD 재생목록", modeLive:"현재 라이브 스트리밍 중", modeVod:"VOD 플레이리스트 재생 중", modeRadio:"라디오 플레이리스트 재생 중", inquiry:"라이브 클럽 등록 문의 →" },
+        en: { locale:"en-US", filterAll:"All", filterLive:"🔴 Live Now", filterVod:"▶ VOD", filterRadio:"📻 Indie Radio", liveStreaming:"Live Streaming Now", vodPlaylist:"VOD Playlist", radioPlaylist:"Radio Playlist", empty:"No clubs match this filter.", ytChannel:"YouTube Channel ↗", liveNowText:"Streaming live now", archiveSuffix:" VOD Playlist", modeLive:"Currently streaming live", modeVod:"Playing VOD playlist", modeRadio:"Playing Radio playlist", inquiry:"Club Registration Inquiry →" },
+        fr: { locale:"fr-FR", filterAll:"Tous", filterLive:"🔴 En Direct", filterVod:"▶ VOD", filterRadio:"📻 Radio Indie", liveStreaming:"Diffusion en direct", vodPlaylist:"Playlist VOD", radioPlaylist:"Playlist Radio", empty:"Aucun club ne correspond à ce filtre.", ytChannel:"Chaîne YouTube ↗", liveNowText:"Diffusion en direct en cours", archiveSuffix:" Playlist de VOD", modeLive:"Actuellement en direct", modeVod:"Lecture de la playlist VOD", modeRadio:"Lecture de la playlist Radio", inquiry:"Inscrire un Live Club →" }
       };
 
       let currentLang = localStorage.getItem("lpl_lang") || "ko";
